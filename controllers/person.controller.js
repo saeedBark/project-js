@@ -60,12 +60,17 @@ export const handleSubmitEditPerson = async (req, res) => {
       }
     );
 
+
+
     // Redirect to the home page after editing the person
     res.redirect("/");
   } catch (error) {
+    console.error("Error updating person:", error.message);
     sendError(res, error, 500, "Failed to update person.");
   }
 };
+
+
 
 // Retrieve all Personnes from the database (with condition).
 export const findAllPeople = async (req, res) => {
@@ -110,6 +115,22 @@ export const findAllPeople = async (req, res) => {
       500,
       "Some error occurred while retrieving personnes."
     );
+  }
+};
+
+//check if email or nni already exists
+export const checkIfEmailOrNniExists = async (req, res) => {
+  const { email, nni } = req.query;
+  try {
+    const person = await Person.findOne({
+      where: {
+        [Sequelize.Op.or]: [{ email }, { nni }],
+      },
+    });
+    res.send({ exists: !!person });
+  }
+  catch (error) {
+    sendError(res, error, 500, "Some error occurred while checking if email or nni exists.");
   }
 };
 

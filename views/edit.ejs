@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <form action="/api/personnes/edit-person" method="post">
+    <form id="person_form" action="/api/personnes/edit-person" method="post">
         <input type="hidden" id="editPersonId" name="personId" value="<%= person.id %>">
 
         <div>
@@ -46,7 +46,8 @@
 
         </div>
     </form>
-    <script type="text/javascript" src="/script.js"></script>
+    <script type="text/javascript" src="/assets/js/script.js" defer></script>
+
 </body>
 
 </html>
