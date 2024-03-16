@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<head>
+    <title>Crud Operation</title>
+    <link type="text/css" rel="stylesheet" href="/style.css">
+</head>
+
+<body><form action="/api/personnes/add-person" method="post">
+    <input type="hidden" id="editPersonId" name="personId">
+  
+    <div>
+        <label for="nom">Full nom</label>
+        <input type="text" name="nom" id="nom">
+    </div>
+    <div>
+        <label for="email">Email</label>
+        <input type="text"  name="email" id="email">
+    </div>
+    <div>
+        <label for="phone">Phone</label>
+        <input type="number" name="phone" id="phone">
+    </div>
+    <div>
+        <label for="nni">nni</label>
+        <input type="number" name="nni" id="nni">
+    </div>
+    <div>
+        <label for="salary">Salary</label>
+        <input type="number" name="salary" id="salary">
+    </div>
+    <div>
+        <label for="department">Department</label>
+        <input type="text"  name="department" id="department">
+    </div>
+    <div>
+        <label for="nbPres">Nb Prescent</label>
+        <input type="number"  name="nbPres" id="nbPres">
+    </div>
+    <div>
+        <label for="nbAbs">Nb Absent</label>
+        <input type="number"  name="nbAbs" id="nbAbs">
+    </div>
+
+    <div class="form_action--button">     <button type="submit">Add Person</button>
+
+        <input type="reset" value="Reset">
+    </div>
+</form>
+<script type="text/javascript" src="/script.js"></script>
+</body>
+</html>
