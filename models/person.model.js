@@ -42,7 +42,6 @@ const Person = sequelize.define(
     },
   },
   {
-    // Model options
     timestamps: true, // Automatically adds createdAt and updatedAt timestamps
   }
 );

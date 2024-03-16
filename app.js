@@ -14,7 +14,6 @@ try {
   console.error("Unable to connect to the database:", error);
 }
 
-getAbsenteeismRate();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
@@ -181,41 +180,6 @@ app.use("/", personRoutes);
 //     // Render the edit page with person details
 //   } catch (error) {
 //     console.error("Error fetching person details for edit:", error.message);
-//     res.status(500).send("Internal Server Error");
-//   }
-// });
-
-// // Route for handling form submission (editing a person)
-// app.post("/edit-person", async (req, res) => {
-//   try {
-//     const {
-//       personId,
-//       newName,
-//       newEmail,
-//       newPhone,
-//       newNni,
-//       newSalary,
-//       newDepartment,
-//       NewNbPres,
-//       NewNbAbs,
-//     } = req.body;
-
-//     // Make a PUT or PATCH request to update the person in your API
-//     await axios.put(`http://localhost:8080/api/personnes/${personId}`, {
-//       nom: newName,
-//       email: newEmail,
-//       phone: parseInt(newPhone),
-//       nni: parseInt(newNni),
-//       salary: parseInt(newSalary),
-//       department: newDepartment,
-//       nbPres: parseInt(NewNbPres),
-//       nbAbs: parseInt(NewNbAbs),
-//     });
-
-//     // Redirect to the home page after editing the person
-//     res.redirect("/");
-//   } catch (error) {
-//     console.error("Error editing a person:", error.message);
 //     res.status(500).send("Internal Server Error");
 //   }
 // });

@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 
 import Person from "../models/person.model.js";
-import { sendError, validateRequest } from "../lib/utils.js";
+import { formatMoney, sendError, validateRequest } from "../lib/utils.js";
 import sequelize from "../models/db.js";
 import { getAbsenteeismRate } from "../functions/query.js";
 
@@ -11,9 +11,59 @@ export const createPerson = async (req, res) => {
 
   try {
     const personne = await Person.create(req.body);
-    res.send(personne);
+    res.redirect("/");
   } catch (err) {
     sendError(res, err, 500, "Some error occurred while creating the Person.");
+  }
+};
+
+export const handleEditPerson = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const person = await Person.findByPk(id);
+    res.render("edit", { person });
+  } catch (error) {
+    console.error("Error fetching person details for edit:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+export const handleSubmitEditPerson = async (req, res) => {
+  try {
+    const {
+      personId,
+      nom: newName,
+      emai: newEmail,
+      phone: newPhone,
+      nni: newNni,
+      salary: newSalary,
+      department: newDepartment,
+      nbPres: NewNbPres,
+      nbAbs: NewNbAbs,
+    } = req.body;
+
+    console.log(req.body);
+
+    const result = await Person.update(
+      {
+        nom: newName,
+        email: newEmail,
+        phone: newPhone,
+        nni: newNni,
+        salary: parseFloat(newSalary),
+        department: newDepartment,
+        nbPres: parseInt(NewNbPres),
+        nbAbs: parseInt(NewNbAbs),
+      },
+      {
+        where: { id: parseInt(personId) },
+      }
+    );
+
+    // Redirect to the home page after editing the person
+    res.redirect("/");
+  } catch (error) {
+    sendError(res, error, 500, "Failed to update person.");
   }
 };
 
@@ -49,8 +99,8 @@ export const findAllPeople = async (req, res) => {
     res.render("index", {
       data: personnes,
       totalUsers,
-      totalSalaries: totalSalaries.dataValues.totalSalary,
-      averageSalary: averageSalary.dataValues.averageSalary,
+      totalSalaries: formatMoney(totalSalaries.dataValues.totalSalary),
+      averageSalary: formatMoney(averageSalary.dataValues.averageSalary),
       absenteeismRate: absenteeismRate.toFixed(2) + "%",
     });
   } catch (error) {
@@ -137,8 +187,9 @@ export const updateOne = async (req, res) => {
 export const deleteOne = async (req, res) => {
   try {
     const deletedPersonne = await Person.destroy({
-      where: { id: req.params.id },
+      where: { id: req.body.personId },
     });
+
     if (!deletedPersonne) {
       return sendError(
         res,
@@ -147,7 +198,8 @@ export const deleteOne = async (req, res) => {
         `Not found Personne with id ${req.params.id}.`
       );
     }
-    res.send({ message: "Personne was deleted successfully!" });
+
+    res.redirect("/");
   } catch (err) {
     sendError(res, err);
   }
